@@ -1,9 +1,11 @@
 import { toast } from "react-toastify";
-import React, { useRef } from "react";
+import React, { useRef, useContext } from "react";
 import copy from "copy-to-clipboard";
 import Navbar from "../Components/Navbar/Navbar";
+import { walletContex } from "../App";
 
 export default function Receive() {
+  const { user, dispatch } = useContext(walletContex);
   const textRef = useRef();
 
   const copyToClipboard = () => {
@@ -22,7 +24,9 @@ export default function Receive() {
       <Navbar />
       <div className="max-w-[800px] mx-auto">
         <div className="w-full h-screen flex flex-col justify-center">
+        <h2 className="text-white text-center text-[40px] mb-[10px]">Adoption</h2>
           <div className="relative">
+            
             <label htmlFor="npm-install-copy-button" className="sr-only">
               Label
             </label>
@@ -30,7 +34,7 @@ export default function Receive() {
               id="npm-install-copy-button"
               type="text"
               className="h-[60px] col-span-6 bg-gray-50 border border-gray-300 text-gray-500 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              value="npm install flowbite"
+              value={user.url}
               ref={textRef}
               disabled
             />
