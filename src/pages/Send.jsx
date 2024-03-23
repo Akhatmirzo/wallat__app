@@ -1,4 +1,3 @@
-
 import React from "react";
 import { TEInput } from "tw-elements-react";
 import SendBtn from "../Components/Buttons/SendBtn";
@@ -27,5 +26,6 @@ export default function Send() {
       </div>
     </div>
   );
-
 }
+
+
