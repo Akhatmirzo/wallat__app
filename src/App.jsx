@@ -12,22 +12,41 @@ import Receive from "./pages/Receive";
 
 const walletContex = createContext();
 function App() {
-  const URL = "https://crudcrud.com/api/6cd6baa154144749ac97e615efe51724/user";
+  const URL = "https://crudcrud.com/api/67535942ea7944c8a0fa3c5af3975324/user";
 
   const ACTIONS = {
-    getData: "getData",
+    setData: "setData",
   };
 
-  const [user, dispatch] = useReducer(async (state, action) => {
+  const [user, dispatch] = useReducer( (state, action) => {
     switch (action.type) {
-      case "getData":
-        const response = await axios.get(URL);
-        console.log(response.data);
-        return response.data;
+      case ACTIONS.setData:
+        return action.data;
+
       default:
         return state;
     }
   }, {});
+  async function getUser() {
+   try{
+    const res = await axios(URL);
+    dispatch({ type: ACTIONS.setData, data: res.data[0] });
+   }catch(err){
+    console.log(err);
+   }
+  }
+  useEffect(() => {
+    getUser();
+  }, []);
+  // const obj = {
+  //   name: "john",
+  //   balance: 1000,
+  // };
+  //   async function postUser() {
+  //     const res = await axios.post(URL, obj);
+
+  //   }
+  // postUser()
 
   return (
     <walletContex.Provider value={{ user, dispatch }}>

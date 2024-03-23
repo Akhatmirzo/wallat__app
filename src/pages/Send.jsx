@@ -1,7 +1,9 @@
 import React from "react";
 import { TEInput } from "tw-elements-react";
+
 import SendBtn from "../Components/Buttons/SendBtn";
 import Navbar from "../Components/Navbar/Navbar";
+
 
 export default function Send() {
   return (

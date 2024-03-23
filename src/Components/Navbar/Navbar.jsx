@@ -7,7 +7,7 @@ export default function Navbar() {
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4 max-w-[1200px]">
         <Link
           to="/"
-          className="flex items-center space-x-3 rtl:space-x-reverse"
+          className="flex items-center space-x-3 rtl:space-x-reverse text-decoration-none "
         >
           <img
             src="https://flowbite.com/docs/images/logo.svg"
@@ -26,7 +26,6 @@ export default function Navbar() {
             >
               Receve
             </button>
-            
           </Link>
           <SendBtn btnText={"Send"}/>
         </div>
