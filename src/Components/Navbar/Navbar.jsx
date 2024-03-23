@@ -25,6 +25,7 @@ export default function Navbar() {
             >
               Receve
             </button>
+            
           </Link>{" "}
           <Link to="/Send">
             <button
