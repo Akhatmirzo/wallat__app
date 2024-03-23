@@ -1,8 +1,5 @@
-import React from "react";
-import "./scss/Home.scss";
 import Navbar from "../Components/Navbar/Navbar";
 import React, { useContext } from "react";
-import Navbar from "../Components/Navbar/Navbar";
 import { walletContex } from "../App";
 
 export default function Home() {
