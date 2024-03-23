@@ -1,6 +1,6 @@
 import React from "react";
 import "./scss/Home.scss";
-import Navbar from "../components/Navbar/Navbar";
+import Navbar from "../Components/Navbar/Navbar";
 export default function Home() {
   return (
     <div>
