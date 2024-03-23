@@ -4,7 +4,7 @@ export default function HomeWallet() {
   return (
     <div>
       <div className="home">
-        <div className="btns"></div>
+        <div className="btns">Hello</div>
       </div>
     </div>
   )
