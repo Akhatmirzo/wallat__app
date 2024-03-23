@@ -8,6 +8,7 @@ import Balance from "./pages/Balance";
 import Exchange from "./pages/Exchange";
 import axios from "axios";
 import Send from "./pages/Send";
+import Receive from "./pages/Receive";
 
 const walletContex = createContext();
 function App() {
@@ -55,6 +56,7 @@ function App() {
         <Route path="/balance" element={<Balance />} />
         <Route path="/exchange" element={<Exchange />} />
         <Route path="/send" element={<Send />} />
+        <Route path="/receive" element={<Receive />}/>
       </Routes>
     </walletContex.Provider>
   );
