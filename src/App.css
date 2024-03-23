@@ -1,38 +1,48 @@
-.App {
-  text-align: center;
+/* Font Family Livvic */
+.livvic-thin {
+  font-family: "Livvic", sans-serif;
+  font-weight: 100;
+  font-style: normal;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.livvic-extralight {
+  font-family: "Livvic", sans-serif;
+  font-weight: 200;
+  font-style: normal;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.livvic-light {
+  font-family: "Livvic", sans-serif;
+  font-weight: 300;
+  font-style: normal;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.livvic-regular {
+  font-family: "Livvic", sans-serif;
+  font-weight: 400;
+  font-style: normal;
 }
 
-.App-link {
-  color: #61dafb;
+.livvic-medium {
+  font-family: "Livvic", sans-serif;
+  font-weight: 500;
+  font-style: normal;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.livvic-semibold {
+  font-family: "Livvic", sans-serif;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.livvic-bold {
+  font-family: "Livvic", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.livvic-black {
+  font-family: "Livvic", sans-serif;
+  font-weight: 900;
+  font-style: normal;
 }
