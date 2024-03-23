@@ -13,3 +13,12 @@
 
 @tailwind components;
 @tailwind utilities;
+
+body {
+  background: #221F3A;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
