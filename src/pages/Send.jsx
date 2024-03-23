@@ -1,11 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { TEInput } from "tw-elements-react";
 
 import SendBtn from "../Components/Buttons/SendBtn";
 import Navbar from "../Components/Navbar/Navbar";
 import axios from "axios";
+import { walletContex } from "../App";
 
 export default function Send() {
+  const { user, disparch } = useContext(walletContex);
+
   const [inputValue, setinput] = useState({
     adres: "",
     price: "",
@@ -14,15 +17,17 @@ export default function Send() {
   async function getLink(url, price) {
     const res = await axios.post(url, { balance: +price });
     console.log(res);
-   
   }
 
   function submitBalance(e) {
     e.preventDefault();
-    getLink(inputValue.adres, inputValue.price);
-    inputValue.adres = "";
-    inputValue.price = "";
-    
+    if (user.price >= inputValue.price) {
+      getLink(inputValue.adres, inputValue.price);
+    } else {
+      alert("not enough money");
+    }
+
+    setinput({ adres: "", price: "" });
   }
 
   function handleinputvalue(e) {
@@ -57,7 +62,7 @@ export default function Send() {
               required
             ></TEInput>
 
-            <SendBtn btnText={"Send"} type={'button'} />
+            <SendBtn btnText={"Send"} type={"button"} />
           </form>
         </div>
       </div>

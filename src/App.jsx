@@ -21,7 +21,7 @@ function App() {
   const [user, dispatch] = useReducer((state, action) => {
     switch (action.type) {
       case ACTIONS.setData:
-        return action.data;
+        return{...action.data, url: URL  };
 
       default:
         return state;

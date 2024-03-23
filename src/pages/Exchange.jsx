@@ -9,7 +9,7 @@ export default function Exchange() {
     CVC: "···",
     Exp: "--/--",
   });
-
+  
   const handleInputValues = (e) => {
     setCard({ ...card, [e.target.name]: [e.target.value] });
   };
