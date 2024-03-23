@@ -12,13 +12,13 @@ import Receive from "./pages/Receive";
 
 const walletContex = createContext();
 function App() {
-  const URL = "https://crudcrud.com/api/67535942ea7944c8a0fa3c5af3975324/user";
+  const URL = "https://crudcrud.com/api/e9b9db05323c422fa4417ad9611b3c5e/user";
 
   const ACTIONS = {
     setData: "setData",
   };
 
-  const [user, dispatch] = useReducer( (state, action) => {
+  const [user, dispatch] = useReducer((state, action) => {
     switch (action.type) {
       case ACTIONS.setData:
         return action.data;
@@ -27,13 +27,14 @@ function App() {
         return state;
     }
   }, {});
+  
   async function getUser() {
-   try{
-    const res = await axios(URL);
-    dispatch({ type: ACTIONS.setData, data: res.data[0] });
-   }catch(err){
-    console.log(err);
-   }
+    try {
+      const res = await axios(URL);
+      dispatch({ type: ACTIONS.setData, data: res.data[res.data.length-1] });
+    } catch (err) {
+      console.log(err);
+    }
   }
   useEffect(() => {
     getUser();
@@ -56,7 +57,7 @@ function App() {
         <Route path="/balance" element={<Balance />} />
         <Route path="/exchange" element={<Exchange />} />
         <Route path="/send" element={<Send />} />
-        <Route path="/receive" element={<Receive />}/>
+        <Route path="/receive" element={<Receive />} />
       </Routes>
     </walletContex.Provider>
   );

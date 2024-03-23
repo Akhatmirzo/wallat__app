@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function SendBtn({ btnText, type }) {
   return type === "button" ? (
-    <button className="w-[150px] bg-white text-gray-800 font-bold rounded border-b-2 border-green-500 hover:border-green-600 hover:bg-green-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center transition-all">
+    <button className="w-[150px] bg-white text-gray-800 font-bold rounded border-b-2 border-green-500 hover:border-green-600 hover:bg-green-500 hover:text-white shadow-md py-2 px-6 inline-flex items-center transition-all" type="submit">
       <span className="mr-2">{btnText}</span>
       <svg
         xmlns="http://www.w3.org/2000/svg"

@@ -4,7 +4,7 @@ import { walletContex } from "../App";
 
 export default function Home() {
   const { user, dispatch } = useContext(walletContex);
-
+ 
   return (
     <div>
       <Navbar />
