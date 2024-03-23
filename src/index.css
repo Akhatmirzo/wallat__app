@@ -14,6 +14,13 @@
 @tailwind components;
 @tailwind utilities;
 
-.bgColor {
+
+body {
   background: #221F3A;
 }
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
