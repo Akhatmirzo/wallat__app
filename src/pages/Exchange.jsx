@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Navbar from "../Components/Navbar/Navbar";
 import { TEInput } from "tw-elements-react";
+import PrimaryBtn from "../Components/Buttons/PrimaryBtn";
+import { toast } from "react-toastify";
 
 export default function Exchange() {
   const [card, setCard] = useState({
@@ -10,10 +12,55 @@ export default function Exchange() {
     Exp: "--/--",
   });
 
+  let [testDebit, setTestDebit] = useState({
+    cardNumber: false,
+    exp: false,
+    cvc: false,
+  });
+
+  function formatCardNumber(num) {
+    return num.replace(/\d{4}(?=(\d{4})+$)/g, "$& ");
+  }
+
   const handleInputValues = (e) => {
-    setCard({ ...card, [e.target.name]: [e.target.value] });
+    if (e.target.name === "CardNumber") {
+      if (!e.target.value.includes("-")) setTestDebit({...testDebit, cardNumber: true});
+      else setTestDebit({...testDebit, cardNumber: false});
+
+      let cardFormat = formatCardNumber(e.target.value);
+      setCard({ ...card, [e.target.name]: cardFormat });
+    } else if (e.target.name === "Exp") {
+      if (!e.target.value.includes("-")) setTestDebit({...testDebit, exp: true});
+      else setTestDebit({...testDebit, exp: false});
+
+      let newExp = e.target.value.replace(/^(\d{2})(\d{2})$/, "$1/$2");
+      setCard({ ...card, [e.target.name]: newExp });
+    } else {
+      setCard({ ...card, [e.target.name]: e.target.value });
+    }
+
+    if (e.target.name === "CVC") {
+      if (!e.target.value.includes(".")) setTestDebit({...testDebit, cvc: true});
+      else setTestDebit({...testDebit, cvc: false});
+    }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!testDebit.cardNumber) {
+      toast.error("Please enter a card number");
+    }
+    if (!testDebit.exp) {
+      toast.error("Please enter an expiration date");
+    }
+    if (!testDebit.cvc) {
+      toast.error("Please enter a CVC");
+    }
+
+    if (testDebit.cardNumber && testDebit.exp && testDebit.cvc) {
+      console.log(card);
+    }
+  };
   return (
     <>
       <Navbar />
@@ -44,9 +91,7 @@ export default function Exchange() {
               <div className="pt-1">
                 <p className="font-light">Card Number</p>
                 <p className="font-medium tracking-more-wider tracking-[5px]">
-                  {
-                    card.CardNumber
-                  }
+                  {card.CardNumber}
                 </p>
               </div>
               <div className="pt-6 pr-6">
@@ -70,7 +115,7 @@ export default function Exchange() {
           </div>
         </div>
 
-        <form className="mt-5 flex flex-col gap-4">
+        <form onSubmit={handleSubmit} className="mt-5 flex flex-col gap-4">
           <TEInput
             type="text"
             id="exampleFormControlInputText"
@@ -78,6 +123,7 @@ export default function Exchange() {
             name="Name"
             className="text-white"
             onChange={handleInputValues}
+            required
           ></TEInput>
 
           <TEInput
@@ -87,16 +133,26 @@ export default function Exchange() {
             name="CardNumber"
             className="text-white"
             onChange={handleInputValues}
+            onClick={(e) => (e.target.value = "")}
+            value={card.CardNumber}
+            maxLength={18}
+            minLength={18}
+            required
           ></TEInput>
 
           <div className="flex items-center justify-between gap-2">
             <TEInput
               type="text"
               id="exampleFormControlInputText"
-              label="Debit Card Expiry Date"
+              label="MM/YY"
               className="w-[400px] md:w-full text-white"
               name="Exp"
               onChange={handleInputValues}
+              onClick={(e) => (e.target.value = "")}
+              value={card.Exp}
+              maxLength={5}
+              minLength={5}
+              required
             ></TEInput>
 
             <TEInput
@@ -106,7 +162,14 @@ export default function Exchange() {
               className="w-[400px] md:w-full text-white"
               name="CVC"
               onChange={handleInputValues}
+              onClick={(e) => (e.target.value = "")}
+              value={card.CVC}
+              maxLength={3}
+              minLength={3}
+              required
             ></TEInput>
+
+            <PrimaryBtn btnText={"Depozit"} type={"button"} />
           </div>
         </form>
       </div>
