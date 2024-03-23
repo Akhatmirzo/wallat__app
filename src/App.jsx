@@ -28,10 +28,6 @@ function App() {
     }
   }, {});
 
-  useEffect(() => {
-    dispatch({type: ACTIONS.getData})
-  }, []);
-
   return (
     <walletContex.Provider value={{ user, dispatch }}>
       <Routes>
