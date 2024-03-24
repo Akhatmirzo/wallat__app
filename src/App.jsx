@@ -12,7 +12,7 @@ import Receive from "./pages/Receive";
 
 const walletContex = createContext();
 function App() {
-  const URL = "https://crudcrud.com/api/e9b9db05323c422fa4417ad9611b3c5e/user";
+  const URL = "https://crudcrud.com/api/c5934770143f464d949f1923b0cc2a3b/user";
 
   const ACTIONS = {
     setData: "setData",
