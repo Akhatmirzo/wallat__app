@@ -10,13 +10,18 @@ export default function Receive() {
 
   const copyToClipboard = () => {
     let copyText = textRef.current.value;
-    let isCopy = copy(copyText, {
-      debug: true,
-      message: "Press #{key} to copy",
-    });
+    let isCopy;
+    if (copyText) {
+      isCopy = copy(copyText, {
+        debug: true,
+        message: "Press #{key} to copy",
+      });
+    }
 
     if (isCopy) {
       toast.success("Copied to Clipboard");
+    }else {
+      toast.error("Failed to copy");
     }
   };
   return (
