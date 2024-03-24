@@ -1,21 +1,27 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Navbar from "../Components/Navbar/Navbar";
 import { TEInput } from "tw-elements-react";
 import PrimaryBtn from "../Components/Buttons/PrimaryBtn";
 import { toast } from "react-toastify";
+import { walletContex } from "../App";
+import { async } from "q";
+import axios from "axios";
 
 export default function Exchange() {
+  const { user, dispatch } = useContext(walletContex);
   const [card, setCard] = useState({
     Name: ".............",
     CardNumber: "---- ---- ---- ----",
     CVC: "···",
     Exp: "--/--",
+    pay: "",
   });
 
   let [testDebit, setTestDebit] = useState({
     cardNumber: false,
     exp: false,
     cvc: false,
+    pay: false,
   });
 
   function formatCardNumber(num) {
@@ -24,41 +30,89 @@ export default function Exchange() {
 
   const handleInputValues = (e) => {
     if (e.target.name === "CardNumber") {
-      if (!e.target.value.includes("-")) setTestDebit({...testDebit, cardNumber: true});
-      else setTestDebit({...testDebit, cardNumber: false});
+      if (!e.target.value.includes("-"))
+        setTestDebit({ ...testDebit, cardNumber: true });
+      else setTestDebit({ ...testDebit, cardNumber: false });
 
       let cardFormat = formatCardNumber(e.target.value);
       setCard({ ...card, [e.target.name]: cardFormat });
     } else if (e.target.name === "Exp") {
-      if (!e.target.value.includes("-")) setTestDebit({...testDebit, exp: true});
-      else setTestDebit({...testDebit, exp: false});
+      if (!e.target.value.includes("-"))
+        setTestDebit({ ...testDebit, exp: true });
+      else setTestDebit({ ...testDebit, exp: false });
 
       let newExp = e.target.value.replace(/^(\d{2})(\d{2})$/, "$1/$2");
       setCard({ ...card, [e.target.name]: newExp });
+    } else if (e.target.name === "pay") {
+      if (e.target.value) setTestDebit({ ...testDebit, pay: true });
+      else setTestDebit({ ...testDebit, pay: false });
+
+      setCard({ ...card, [e.target.name]: e.target.value });
     } else {
       setCard({ ...card, [e.target.name]: e.target.value });
     }
 
     if (e.target.name === "CVC") {
-      if (!e.target.value.includes(".")) setTestDebit({...testDebit, cvc: true});
-      else setTestDebit({...testDebit, cvc: false});
+      if (!e.target.value.includes("."))
+        setTestDebit({ ...testDebit, cvc: true });
+      else setTestDebit({ ...testDebit, cvc: false });
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!testDebit.cardNumber) {
       toast.error("Please enter a card number");
     }
+    if (card.CardNumber.length !== 19) {
+      toast.error("Card number must be at least 16 characters");
+    }
     if (!testDebit.exp) {
       toast.error("Please enter an expiration date");
+    }
+    if (card.Exp.length !== 5) {
+      toast.error("Expiry must be at least 4 characters");
     }
     if (!testDebit.cvc) {
       toast.error("Please enter a CVC");
     }
+    if (card.CVC.length !== 3) {
+      toast.error("CVC must be at least 3 characters");
+    }
+    if (!testDebit.pay) {
+      toast.error("Please enter a payment amount");
+    }
 
-    if (testDebit.cardNumber && testDebit.exp && testDebit.cvc) {
-      console.log(card);
+    if (
+      testDebit.cardNumber &&
+      testDebit.exp &&
+      testDebit.cvc &&
+      testDebit.pay
+    ) {
+      try {
+        const response = await axios.put(`${user.url}/${user._id}`, {
+          balance: user.balance + +card.pay,
+        });
+
+        if (!response.status === 200) {
+          throw new Error(response.statusText);
+        }
+
+        dispatch({ type: "update" });
+        toast.success("Transaction Successful");
+
+        e.target.reset();
+        setCard({
+          Name: ".............",
+          CardNumber: "---- ---- ---- ----",
+          CVC: "···",
+          Exp: "--/--",
+          pay: "",
+        });
+      } catch (error) {
+        toast.error("Transaction Failed");
+        console.log(error);
+      }
     }
   };
   return (
@@ -131,13 +185,12 @@ export default function Exchange() {
             id="exampleFormControlInputText"
             label="Debit Card Number"
             name="CardNumber"
-            className="text-white"
+            className={`text-white `}
             onChange={handleInputValues}
             onClick={(e) => (e.target.value = "")}
             value={card.CardNumber}
-            maxLength={18}
             minLength={18}
-            required
+            maxLength={18}
           ></TEInput>
 
           <div className="flex items-center justify-between gap-2">
@@ -168,9 +221,18 @@ export default function Exchange() {
               minLength={3}
               required
             ></TEInput>
-
-            <PrimaryBtn btnText={"Depozit"} type={"button"} />
           </div>
+          <TEInput
+            type="number"
+            id="exampleFormControlInputText"
+            label="Amount"
+            className="w-full md:w-full text-white"
+            name="pay"
+            onChange={handleInputValues}
+            onClick={(e) => (e.target.value = "")}
+            value={card.pay}
+          ></TEInput>
+          <PrimaryBtn btnText={"Depozit"} type={"button"} />
         </form>
       </div>
     </>

@@ -12,17 +12,22 @@ import Receive from "./pages/Receive";
 
 const walletContex = createContext();
 function App() {
-  const URL = "https://crudcrud.com/api/c5934770143f464d949f1923b0cc2a3b/user";
+
+  const URL = "https://crudcrud.com/api/6886e9ba6e3949e68332938c40e26b3c/user";
+
 
   const ACTIONS = {
     setData: "setData",
+    update: "update",
   };
 
   const [user, dispatch] = useReducer((state, action) => {
     switch (action.type) {
       case ACTIONS.setData:
         return{...action.data, url: URL  };
-
+      case ACTIONS.update:
+        getUser();
+        return state;
       default:
         return state;
     }

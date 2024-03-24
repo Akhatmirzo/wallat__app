@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import SendBtn from "../Buttons/SendBtn";
 import PrimaryBtn from "../Buttons/PrimaryBtn";
 export default function Navbar() {
   return (
@@ -20,12 +19,12 @@ export default function Navbar() {
           </span>
         </Link>
         <div className="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-          <Link to="/Exchange">
+          <Link to="/exchange">
             <PrimaryBtn btnText={"Exchange"} />
           </Link>
 
           <Link to="/receive">
-            <PrimaryBtn btnText={"receive"} />
+            <PrimaryBtn btnText={"Receive"} />
           </Link>
 
           <Link to={"/send"}>
