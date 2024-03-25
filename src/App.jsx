@@ -9,6 +9,7 @@ import Exchange from "./pages/Exchange";
 import axios from "axios";
 import Send from "./pages/Send";
 import Receive from "./pages/Receive";
+import { toast } from "react-toastify";
 
 const walletContex = createContext();
 function App() {
@@ -19,6 +20,7 @@ function App() {
   const ACTIONS = {
     setData: "setData",
     update: "update",
+    send: "send",
   };
 
   const [user, dispatch] = useReducer((state, action) => {
@@ -28,31 +30,54 @@ function App() {
       case ACTIONS.update:
         getUser();
         return state;
+      case ACTIONS.send:
+        const { sendUrl, sendAmount } = action.payload;
+        sendMoney(sendUrl, sendAmount);
+        return state;
+
       default:
         return state;
     }
   }, {});
   
-  async function getUser() {
+  async function getUser(url) {
     try {
-      const res = await axios(URL);
+      const res = await axios(url);
       dispatch({ type: ACTIONS.setData, data: res.data[res.data.length-1] });
+      return res;
     } catch (err) {
       console.log(err);
     }
   }
-  useEffect(() => {
-    getUser();
-  }, []);
-  // const obj = {
-  //   name: "john",
-  //   balance: 1000,
-  // };
-  //   async function postUser() {
-  //     const res = await axios.post(URL, obj);
 
-  //   }
-  // postUser()
+  async function sendMoney(sendUrl, amount) {
+    try {
+      const getRes = await axios(sendUrl);
+      if (!getRes.status === 200) {
+        throw new Error(getRes.statusText);
+      }
+
+      if (getRes?.data) {
+        const res = await axios.put(sendUrl, { ...getRes.data, balance: getRes.data.balance + amount });
+        if (!res.status === 200) {
+          toast.error("Error sending");
+          throw new Error(res.statusText);
+        }
+
+        const myData = await getUser(URL);
+        await axios.put(URL, { ...myData.data, balance: myData.data.balance - amount})
+
+        toast.success("Success sending");
+      }
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getUser(URL);
+  }, []);
 
   return (
     <walletContex.Provider value={{ user, dispatch }}>
