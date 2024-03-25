@@ -4,7 +4,6 @@ import { TEInput } from "tw-elements-react";
 import PrimaryBtn from "../Components/Buttons/PrimaryBtn";
 import { toast } from "react-toastify";
 import { walletContex } from "../App";
-import { async } from "q";
 import axios from "axios";
 
 export default function Exchange() {
