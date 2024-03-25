@@ -20,7 +20,6 @@ function App() {
   const ACTIONS = {
     setData: "setData",
     update: "update",
-    send: "send",
   };
 
   const [user, dispatch] = useReducer((state, action) => {
@@ -28,11 +27,7 @@ function App() {
       case ACTIONS.setData:
         return{...action.data, url: URL  };
       case ACTIONS.update:
-        getUser();
-        return state;
-      case ACTIONS.send:
-        const { sendUrl, sendAmount } = action.payload;
-        sendMoney(sendUrl, sendAmount);
+        getUser(URL);
         return state;
 
       default:
@@ -47,31 +42,6 @@ function App() {
       return res;
     } catch (err) {
       console.log(err);
-    }
-  }
-
-  async function sendMoney(sendUrl, amount) {
-    try {
-      const getRes = await axios(sendUrl);
-      if (!getRes.status === 200) {
-        throw new Error(getRes.statusText);
-      }
-
-      if (getRes?.data) {
-        const res = await axios.put(sendUrl, { ...getRes.data, balance: getRes.data.balance + amount });
-        if (!res.status === 200) {
-          toast.error("Error sending");
-          throw new Error(res.statusText);
-        }
-
-        const myData = await getUser(URL);
-        await axios.put(URL, { ...myData.data, balance: myData.data.balance - amount})
-
-        toast.success("Success sending");
-      }
-      
-    } catch (error) {
-      console.log(error);
     }
   }
 

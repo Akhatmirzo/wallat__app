@@ -5,7 +5,7 @@ import SendBtn from "../Components/Buttons/SendBtn";
 import Navbar from "../Components/Navbar/Navbar";
 import axios from "axios";
 import { walletContex } from "../App";
-import { toast } from "react-toastify"; 
+import { toast } from "react-toastify";
 
 export default function Send() {
   const { user, dispatch } = useContext(walletContex);
@@ -15,19 +15,29 @@ export default function Send() {
     price: "",
   });
 
-  async function getLink(url, price) {
-    const res = await axios.post(url, { balance: +price });
+  async function getLink(url, price, userBasicBalance) {
+    const res = await axios.post(url, { balance: +price + userBasicBalance });
     console.log(res);
   }
 
-  function submitBalance(e) {
+  async function submitBalance(e) {
     e.preventDefault();
-    
-    if (user.balance >= inputValue.price) {
-      dispatch({type: "send", payload: { sendUrl: inputValue.adres, sendAmount: +inputValue.price}})
-    }
+    try {
+      const res = await axios(inputValue.adres);
 
-    setinput({ adres: "", price: "" });
+      if (user.balance >= inputValue.price) {
+        const sendUser = res.data[res.data.length - 1]
+        getLink(inputValue.adres, inputValue.price, sendUser.balance)
+        const balance = user.balance - +inputValue.price
+        console.log(balance);
+        await axios.post(user.url,{balance: balance})
+        dispatch({ type: "update"});
+      }
+
+      setinput({ adres: "", price: "" });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   function handleinputvalue(e) {
