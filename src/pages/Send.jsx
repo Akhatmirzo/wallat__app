@@ -8,7 +8,7 @@ import { walletContex } from "../App";
 import { toast } from "react-toastify"; 
 
 export default function Send() {
-  const { user, disparch } = useContext(walletContex);
+  const { user, dispatch } = useContext(walletContex);
 
   const [inputValue, setinput] = useState({
     adres: "",
@@ -23,10 +23,8 @@ export default function Send() {
   function submitBalance(e) {
     e.preventDefault();
     
-    if (user.price >= inputValue.price && user.url !== inputValue.value) {
-      getLink(inputValue.adres, inputValue.price);
-    } else {
-     toast.error('not enough money')
+    if (user.balance >= inputValue.price) {
+      dispatch({type: "send", payload: { sendUrl: inputValue.adres, sendAmount: +inputValue.price}})
     }
 
     setinput({ adres: "", price: "" });
