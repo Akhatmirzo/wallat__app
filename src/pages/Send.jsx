@@ -5,7 +5,7 @@ import SendBtn from "../Components/Buttons/SendBtn";
 import Navbar from "../Components/Navbar/Navbar";
 import axios from "axios";
 import { walletContex } from "../App";
-import { toast } from "react-toastify"; 
+import { toast } from "react-toastify";
 
 export default function Send() {
   const { user, dispatch } = useContext(walletContex);
@@ -22,9 +22,10 @@ export default function Send() {
 
   function submitBalance(e) {
     e.preventDefault();
-    
+
     if (user.balance >= inputValue.price) {
-      dispatch({type: "send", payload: { sendUrl: inputValue.adres, sendAmount: +inputValue.price}})
+      dispatch({ type: "send", price: inputValue.price });
+      getLink(inputValue.adres, inputValue.price);
     }
 
     setinput({ adres: "", price: "" });

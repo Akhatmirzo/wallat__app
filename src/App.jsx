@@ -13,9 +13,7 @@ import { toast } from "react-toastify";
 
 const walletContex = createContext();
 function App() {
-
-  const URL = "https://crudcrud.com/api/9cbec30723ec4d5bb2967975c601c5c6/user";
-
+  const URL = "https://crudcrud.com/api/f494c66ca5de40ecb6a51b1a693954eb/user";
 
   const ACTIONS = {
     setData: "setData",
@@ -26,24 +24,22 @@ function App() {
   const [user, dispatch] = useReducer((state, action) => {
     switch (action.type) {
       case ACTIONS.setData:
-        return{...action.data, url: URL  };
+        return { ...action.data, url: URL };
       case ACTIONS.update:
         getUser();
         return state;
       case ACTIONS.send:
-        const { sendUrl, sendAmount } = action.payload;
-        sendMoney(sendUrl, sendAmount);
-        return state;
+        return state.price - action.price;
 
       default:
         return state;
     }
   }, {});
-  
+
   async function getUser(url) {
     try {
       const res = await axios(url);
-      dispatch({ type: ACTIONS.setData, data: res.data[res.data.length-1] });
+      dispatch({ type: ACTIONS.setData, data: res.data[res.data.length - 1] });
       return res;
     } catch (err) {
       console.log(err);
@@ -58,18 +54,23 @@ function App() {
       }
 
       if (getRes?.data) {
-        const res = await axios.put(sendUrl, { ...getRes.data, balance: getRes.data.balance + amount });
+        const res = await axios.put(sendUrl, {
+          ...getRes.data,
+          balance: getRes.data.balance + amount,
+        });
         if (!res.status === 200) {
           toast.error("Error sending");
           throw new Error(res.statusText);
         }
 
         const myData = await getUser(URL);
-        await axios.put(URL, { ...myData.data, balance: myData.data.balance - amount})
+        await axios.put(URL, {
+          ...myData.data,
+          balance: myData.data.balance - amount,
+        });
 
         toast.success("Success sending");
       }
-      
     } catch (error) {
       console.log(error);
     }

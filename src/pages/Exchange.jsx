@@ -178,6 +178,7 @@ export default function Exchange() {
             className="text-white"
             onChange={handleInputValues}
             required
+            maxLength={25}
           ></TEInput>
 
           <TEInput
